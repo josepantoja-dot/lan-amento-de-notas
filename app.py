@@ -33,11 +33,11 @@ if etapa == "1. Identificação (Nota Física)":
     st.header("📦 Etapa 1: Encontrar os dados na Nota")
     st.write("Analise a nota fiscal abaixo. É nela que estão os dados necessários para o SAP.")
 
-    # Tentativa de carregar a imagem renomeada
+    # AQUI ESTÁ A CORREÇÃO: alterado de .jpg para .png
     try:
-        st.image("nota.jpg", caption="Modelo de NFS-e (Dados Borrados para Segurança)")
+        st.image("nota.png", caption="Modelo de NFS-e (Dados Borrados para Segurança)")
     except:
-        st.error("⚠️ Erro: O ficheiro 'nota.jpg' não foi encontrado no GitHub. Certifica-te de que o ficheiro foi renomeado e enviado corretamente.")
+        st.error("⚠️ Erro: O ficheiro 'nota.png' não foi encontrado no GitHub. Certifique-se de que o nome está correto.")
 
     st.markdown("""
     ### 📝 O que deves anotar desta nota:
@@ -88,4 +88,3 @@ elif etapa == "4. Resumo e Dicas":
         st.warning("Se o valor no SAP for diferente do valor da Nota, NÃO lances. Avisa o teu supervisor imediatamente.")
 
     st.info("Parabéns por concluíres o tutorial! Estás pronto para começar.")
-    
