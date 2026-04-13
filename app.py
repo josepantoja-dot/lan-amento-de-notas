@@ -63,4 +63,29 @@ elif etapa == "2. Busca de Pedido (ME2L)":
     """)
 
 elif etapa == "3. Lançamento (MIGO)":
-    st.header("⚙️ Et
+    st.header("⚙️ Etapa 3: Lançamento Final (MIGO)")
+    st.write("Com o número do PC (**4500468106**) em mãos, vamos finalizar:")
+
+    st.markdown("""
+    1.  Acede à transação **MIGO**.
+    2.  Coloca o número do Pedido no campo correspondente.
+    3.  **Verificação:** Confirma se o valor no ecrã bate com os **R$ 590,33** da nota.
+    4.  **Ativação:** Marca a caixa na coluna **OK** para a linha do serviço.
+    5.  **Dados de Referência:**
+        * Campo **Nota de Remessa**: Digita o número da nota (**120**).
+        * Campo **Data do Doc**: Insere a data de emissão que está no topo da nota.
+    6.  **Gravar:** Clica no ícone do **Disquete** para salvar.
+    """)
+    st.success("✅ O sistema irá gerar um número de Documento. O lançamento está concluído!")
+
+elif etapa == "4. Resumo e Dicas":
+    st.header("💡 Dicas para não errar")
+    
+    with st.expander("Diferença entre Nota e Boleto"):
+        st.write("O valor que deve bater com o SAP é sempre o da **Nota Fiscal**. O boleto é apenas para o financeiro pagar depois.")
+    
+    with st.expander("O que fazer se o valor for diferente?"):
+        st.warning("Se o valor no SAP for diferente do valor da Nota, NÃO lances. Avisa o teu supervisor imediatamente.")
+
+    st.info("Parabéns por concluíres o tutorial! Estás pronto para começar.")
+    
