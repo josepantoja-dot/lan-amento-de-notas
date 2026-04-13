@@ -6,13 +6,15 @@ st.set_page_config(
     layout="centered"
 )
 
-# --- ESTILIZAÇÃO DA NOTA FISCAL ---
-# O HTML abaixo está sem espaços no começo propositalmente para não bugar o Streamlit.
-nota_fiscal_html = """
-<div style="background-color:#fff;padding:15px;border:2px solid #000;color:#000;font-family:'Arial',sans-serif;font-size:12px;line-height:1.2;">
-<div style="display:flex;border-bottom:2px solid #000;padding-bottom:5px;">
+# Estilo para a tarja preta
+tarja = '<span style="background-color:black; color:black; border-radius:2px;">CENSURADO_DADO_CONFIDENCIAL</span>'
+
+# --- ESTILIZAÇÃO DA NOTA FISCAL (LAYOUT FIEL AO PDF COM TARJAS) ---
+nota_fiscal_html = f"""
+<div style="background-color:#fff;padding:10px;border:2px solid #000;color:#000;font-family:'Arial',sans-serif;font-size:11px;line-height:1.2;">
+<div style="display:flex;border-bottom:2px solid #000;">
 <div style="flex:1;text-align:center;border-right:1px solid #000;padding:5px;">
-<strong style="font-size:14px;">Prefeitura de Manaus</strong><br>Secretaria Municipal de Finanças,<br>Planejamento e Tecnologia da Informação
+<strong style="font-size:12px;">Prefeitura de Manaus</strong><br>Secretaria Municipal de Finanças,<br>Planejamento e Tecnologia da Informação
 </div>
 <div style="flex:1;text-align:center;border-right:1px solid #000;padding:5px;">
 <strong style="font-size:14px;">NFS-e</strong><br>Nota Fiscal de Serviço eletrônica
@@ -22,75 +24,63 @@ nota_fiscal_html = """
 <span style="background-color:#e6f2ff;padding:2px 10px;border:1px solid #0066cc;font-weight:bold;font-size:16px;">118</span>
 </div>
 </div>
-<div style="border-bottom:1px solid #000;padding:5px;font-size:10px;">
+<div style="border-bottom:1px solid #000;padding:5px;font-size:9px;">
 <strong>Chave de Acesso da NFS-e</strong><br>13026032229631434000171000000000011826043341345615
 </div>
-<div style="border-bottom:1px solid #000;padding:5px;background-color:#f2f2f2;">
-<strong>EMITENTE DA NFS-e (Prestador do Serviço)</strong><br>Nome / Nome Empresarial: <strong>NOVA ENERGIA SERVICOS E COMERCIO LTDA</strong><br>
-CNPJ/CPF: <span style="background-color:#ffff99;padding:1px 4px;border:1px solid #999;font-weight:bold;">29.631.434/0001-71</span> <small>(Use para ME2L)</small>
+<div style="border-bottom:1px solid #000;padding:5px;background-color:#f9f9f9;">
+<strong>EMITENTE DA NFS-e (Prestador do Serviço)</strong><br>
+Nome/Razão Social: {tarja}<br>
+CNPJ/CPF: {tarja}<br>
+Endereço: {tarja}
 </div>
 <div style="border-bottom:1px solid #000;padding:5px;">
-<strong>TOMADOR DO SERVIÇO</strong><br>Nome / Nome Empresarial: <strong>SOCIEDADE FOGAS LTDA</strong><br>CNPJ/CPF: 04.563.672/0001-66
+<strong>TOMADOR DO SERVIÇO</strong><br>
+Nome/Razão Social: {tarja}<br>
+CNPJ/CPF: {tarja}<br>
+Endereço: {tarja}
 </div>
-<div style="border-bottom:1px solid #000;padding:5px;min-height:100px;">
+<div style="border-bottom:1px solid #000;padding:5px;min-height:120px;">
 <strong>SERVIÇO PRESTADO</strong><br>
 <p>14.01 - SERVIÇOS DE ENSAIOS EM EPI/EPC E FERRAMENTAS PARA LINHA VIVA.</p>
-<div style="margin-top:15px;padding:8px;border:2px dashed #cc0000;background-color:#ffeeee;color:#cc0000;font-weight:bold;text-align:center;">
+<div style="margin-top:20px;padding:10px;border:2px dashed #cc0000;background-color:#ffeeee;color:#cc0000;font-weight:bold;text-align:center;font-size:14px;">
 CONFORME PEDIDO DE COMPRA 4500462144 - VENCIMENTO: 29/04/2026.
 </div>
-<p style="font-size:10px;color:#666;text-align:center;">(🚨 Aprendiz: O número do PC está neste quadro vermelho acima!)</p>
+<p style="font-size:10px;color:#666;text-align:center;margin-top:5px;">(🚨 Aprendiz: O número do PC está neste quadro vermelho acima!)</p>
+</div>
+<div style="display:flex;justify-content:space-between;border-bottom:1px solid #000;padding:5px;">
+<div><strong>Município de Incidência:</strong> Manaus - AM</div>
+<div><strong>Alíquota:</strong> 5,00%</div>
 </div>
 <div style="display:flex;justify-content:flex-end;padding:10px;">
 <div style="text-align:right;">
 <strong>Valor Líquido da NFS-e:</strong><br>
-<span style="font-size:18px;font-weight:bold;color:#008000;background-color:#d9f2d9;padding:2px 10px;border:1px solid #008000;">R$ 7.280,00</span>
+<span style="font-size:20px;font-weight:bold;color:#008000;background-color:#d9f2d9;padding:2px 12px;border:1px solid #008000;">R$ 7.280,00</span>
 </div>
 </div>
 </div>
 <br>
 """
 
-# --- BARRA LATERAL (MENU) ---
+# --- BARRA LATERAL ---
 st.sidebar.title("📌 Navegação")
-etapa = st.sidebar.radio(
-    "Selecione a Etapa:",
-    ["1. Início e Exemplo de Nota", "2. Localizar PC (ME2L)", "3. Lançamento (MIGO)"]
-)
+etapa = st.sidebar.radio("Selecione a Etapa:", ["1. Identificação (Nota)", "2. Busca no SAP (ME2L)", "3. Lançamento (MIGO)"])
 
-# --- CONTEÚDO PRINCIPAL ---
-if etapa == "1. Início e Exemplo de Nota":
-    st.title("📦 Etapa 1: Recebimento do Documento")
-    st.write("Identifique os dados abaixo na sua nota física para iniciar o processo no SAP.")
-    
-    # Renderiza a nota técnica (agora sem falhas!)
+# --- CONTEÚDO ---
+if etapa == "1. Identificação (Nota)":
+    st.title("📦 Etapa 1: Analisando o Documento")
+    st.write("Abaixo está o modelo da nota que você recebeu, com as informações sensíveis ocultadas:")
     st.markdown(nota_fiscal_html, unsafe_allow_html=True)
-    
     st.markdown("""
-    ### 📝 Pontos de Atenção:
-    * **Número da Nota (118):** Fica no topo à direita.
-    * **CNPJ Fornecedor:** Use para pesquisar o pedido se ele não estiver impresso.
-    * **Descrição do Serviço:** O número do **Pedido (PC)** no padrão da Fogás vem escrito no corpo do texto.
+    ### 📝 O que você precisa extrair:
+    1. **Número da NFS-e:** 118 (Topo direito).
+    2. **Pedido de Compra (PC):** 4500462144 (Dentro da descrição do serviço).
+    3. **Valor Líquido:** R$ 7.280,00.
     """)
-    
-    if st.button("Tudo certo, vamos prosseguir!"):
-        st.success("Use o menu lateral para ir à Etapa 2 ou 3.")
 
-elif etapa == "2. Localizar PC (ME2L)":
-    st.title("🔍 Etapa 2: Buscar Pedido (ME2L)")
-    st.markdown("""
-    1. Entre na **ME2L**.
-    2. No fornecedor, use o CNPJ: **29.631.434/0001-71**.
-    3. Clique no **Relógio**.
-    4. O valor do pedido deve ser **R$ 7.280,00**.
-    """)
+elif etapa == "2. Busca no SAP (ME2L)":
+    st.title("🔍 Etapa 2: Localizar PC")
+    st.write("Caso o PC não estivesse na descrição, você usaria o CNPJ do fornecedor (que está sob a tarja amarela na nota real) para buscar na transação **ME2L**.")
 
 elif etapa == "3. Lançamento (MIGO)":
-    st.title("⚙️ Etapa 3: Lançamento (MIGO)")
-    st.markdown("""
-    1. Digite **MIGO**.
-    2. Cole o pedido: **4500462144**.
-    3. Nota de Remessa: **118**.
-    4. Data: **09/04/2026**.
-    5. Clique no **Disquete** para salvar.
-    """)
-    
+    st.title("⚙️ Etapa 3: Registro")
+    st.write("Use os dados identificados na Etapa 1 para preencher os campos de Pedido, Nota de Remessa e Data no SAP.")
