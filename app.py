@@ -6,31 +6,57 @@ st.set_page_config(
     layout="centered"
 )
 
-# --- ESTILIZAÇÃO DA NOTA FISCAL ---
-# ATENÇÃO: As linhas abaixo estão sem espaço no começo de propósito 
-# para o Streamlit não transformar em bloco de texto/código.
+# --- ESTILIZAÇÃO DA NOTA FISCAL (LAYOUT FIEL AO PDF) ---
 nota_fiscal_html = """
-<div style="background-color: #ffffff; padding: 20px; border: 1px solid #cccccc; border-radius: 8px; color: #000000; font-family: Arial, sans-serif; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-<h3 style="text-align: center; margin-top: 0; color: #333333;">PREFEITURA DE MANAUS<br><span style="font-size: 16px; font-weight: normal;">Nota Fiscal de Serviço Eletrônica (NFS-e)</span></h3>
-<hr style="border-top: 1px solid #eeeeee;">
-<p><strong>Número da NFS-e:</strong> <span style="background-color: #e6f2ff; padding: 2px 6px; border: 1px solid #0066cc; font-weight: bold;">118</span> &nbsp;&nbsp;&nbsp; <strong>Data de Emissão:</strong> <span style="background-color: #e6f2ff; padding: 2px 6px; border: 1px solid #0066cc; font-weight: bold;">09/04/2026</span></p>
-<hr style="border-top: 1px solid #eeeeee;">
-<p><strong>PRESTADOR DO SERVIÇO (FORNECEDOR)</strong><br>
-CNPJ: <span style="background-color: #ffff99; padding: 2px 6px; border: 1px solid #cccc00; font-weight: bold;">99.999.999/0001-99</span> <em>(Use este CNPJ na ME2L)</em><br>
-Nome: EMPRESA FORNECEDORA DE EXEMPLO LTDA</p>
-<hr style="border-top: 1px solid #eeeeee;">
-<p><strong>TOMADOR DO SERVIÇO</strong><br>
-CNPJ: 04.563.672/0001-66<br>
-Nome: SOCIEDADE FOGAS LTDA</p>
-<hr style="border-top: 1px solid #eeeeee;">
-<p><strong>DESCRIÇÃO DO SERVIÇO</strong></p>
-<div style="background-color: #f9f9f9; padding: 15px; border: 1px solid #dddddd; border-radius: 5px;">
-14.01 SERVIÇO (ENSAIOS EM EPI/EPC...)<br><br>
-<span style="background-color: #ffcccc; color: #cc0000; font-weight: bold; padding: 4px 8px; border: 1px dashed #cc0000;">CONFORME PEDIDO DE COMPRA 4500462144-VENCIMENTO: 29/04/2026.</span><br>
-<br><em>(🚨 <strong>Atenção Aprendiz:</strong> O número do PC está escondido no meio do texto!)</em>
-</div>
-<hr style="border-top: 1px solid #eeeeee;">
-<p style="text-align: right; font-size: 18px; margin-bottom: 0;"><strong>VALOR TOTAL DA NFS-e:</strong> <span style="background-color: #d9f2d9; padding: 4px 8px; border: 1px solid #339933; font-weight: bold;">R$ 7.280,00</span></p>
+<div style="background-color: #fff; padding: 15px; border: 2px solid #000; color: #000; font-family: 'Arial', sans-serif; font-size: 12px; line-height: 1.2;">
+    
+    <div style="display: flex; border-bottom: 2px solid #000; padding-bottom: 5px;">
+        <div style="flex: 1; text-align: center; border-right: 1px solid #000; padding: 5px;">
+            <strong style="font-size: 14px;">Prefeitura de Manaus</strong><br>
+            Secretaria Municipal de Finanças,<br>Planejamento e Tecnologia da Informação
+        </div>
+        <div style="flex: 1; text-align: center; border-right: 1px solid #000; padding: 5px;">
+            <strong style="font-size: 14px;">NFS-e</strong><br>
+            Nota Fiscal de Serviço eletrônica
+        </div>
+        <div style="flex: 1; text-align: center; padding: 5px;">
+            <strong>Número da NFS-e</strong><br>
+            <span style="background-color: #e6f2ff; padding: 2px 10px; border: 1px solid #0066cc; font-weight: bold; font-size: 16px;">118</span>
+        </div>
+    </div>
+
+    <div style="border-bottom: 1px solid #000; padding: 5px; font-size: 10px;">
+        <strong>Chave de Acesso da NFS-e</strong><br>
+        13026032229631434000171000000000011826043341345615
+    </div>
+
+    <div style="border-bottom: 1px solid #000; padding: 5px; background-color: #f2f2f2;">
+        <strong>EMITENTE DA NFS-e (Prestador do Serviço)</strong><br>
+        Nome / Nome Empresarial: <strong>NOVA ENERGIA SERVICOS E COMERCIO LTDA</strong><br>
+        CNPJ/CPF: <span style="background-color: #ffff99; padding: 1px 4px; border: 1px solid #999; font-weight: bold;">29.631.434/0001-71</span> <small>(Use para ME2L)</small>
+    </div>
+
+    <div style="border-bottom: 1px solid #000; padding: 5px;">
+        <strong>TOMADOR DO SERVIÇO</strong><br>
+        Nome / Nome Empresarial: <strong>SOCIEDADE FOGAS LTDA</strong><br>
+        CNPJ/CPF: 04.563.672/0001-66
+    </div>
+
+    <div style="border-bottom: 1px solid #000; padding: 5px; min-height: 100px;">
+        <strong>SERVIÇO PRESTADO</strong><br>
+        <p>14.01 - SERVIÇOS DE ENSAIOS EM EPI/EPC E FERRAMENTAS PARA LINHA VIVA.</p>
+        <div style="margin-top: 15px; padding: 8px; border: 2px dashed #cc0000; background-color: #ffeeee; color: #cc0000; font-weight: bold; text-align: center;">
+            CONFORME PEDIDO DE COMPRA 4500462144 - VENCIMENTO: 29/04/2026.
+        </div>
+        <p style="font-size: 10px; color: #666; text-align: center;">(🚨 Aprendiz: O número do PC está neste quadro vermelho acima!)</p>
+    </div>
+
+    <div style="display: flex; justify-content: flex-end; padding: 10px;">
+        <div style="text-align: right;">
+            <strong>Valor Líquido da NFS-e:</strong><br>
+            <span style="font-size: 18px; font-weight: bold; color: #008000; background-color: #d9f2d9; padding: 2px 10px; border: 1px solid #008000;">R$ 7.280,00</span>
+        </div>
+    </div>
 </div>
 <br>
 """
@@ -45,50 +71,36 @@ etapa = st.sidebar.radio(
 # --- CONTEÚDO PRINCIPAL ---
 if etapa == "1. Início e Exemplo de Nota":
     st.title("📦 Etapa 1: Recebimento do Documento")
-    st.write("O primeiro passo é identificar as informações cruciais na Nota Fiscal que você recebeu.")
+    st.write("Identifique os dados abaixo na sua nota física para iniciar o processo no SAP.")
     
-    st.info("💡 **Dica:** Veja o exemplo abaixo para aprender onde cada informação fica na nota.")
-    
-    # Renderiza a nota fiscal (agora vai desenhar certo!)
+    # Renderiza a nota técnica igual ao PDF
     st.markdown(nota_fiscal_html, unsafe_allow_html=True)
     
     st.markdown("""
-    ### 📝 O que conferir na imagem acima:
-    * **Azul:** Número e Data da nota (Usaremos na MIGO).
-    * **Amarelo:** CNPJ do fornecedor (Usaremos na ME2L caso não ache o pedido).
-    * **Vermelho:** O Número do Pedido (PC). Note que nas notas de serviço, ele costuma ficar misturado na descrição!
-    * **Verde:** O Valor Total que deve bater com o SAP.
+    ### 📝 Pontos de Atenção:
+    * **Número da Nota (118):** Fica no topo à direita.
+    * **CNPJ Fornecedor:** Use para pesquisar o pedido se ele não estiver impresso.
+    * **Descrição do Serviço:** O número do **Pedido (PC)** no padrão da Fogás vem escrito no corpo do texto.
     """)
     
-    if st.button("Entendi! Vamos para o próximo passo"):
-        st.success("Perfeito! Escolha o próximo passo no menu lateral.")
+    if st.button("Tudo certo, vamos prosseguir!"):
+        st.success("Use o menu lateral para ir à Etapa 2 ou 3.")
 
 elif etapa == "2. Localizar PC (ME2L)":
-    st.title("🔍 Etapa 2: Buscar Pedido no SAP (ME2L)")
-    st.write("Se a nota física **não** trouxer o número do pedido impresso, faça o seguinte no SAP:")
-    
+    st.title("🔍 Etapa 2: Buscar Pedido (ME2L)")
     st.markdown("""
-    1. Digite a transação **ME2L**.
-    2. No campo **Fornecedor**, coloque o código dele.
-       - *Sem código? Clique na busca e cole o **CNPJ** (destaque amarelo da etapa 1).*
-    3. Clique no ícone do **Relógio** (Executar).
-    4. Procure o pedido que bata com o valor da nota (ex: **R$ 7.280,00**).
-    5. Copie o número do pedido.
+    1. Entre na **ME2L**.
+    2. No fornecedor, use o CNPJ: **29.631.434/0001-71**.
+    3. Clique no **Relógio**.
+    4. O valor do pedido deve ser **R$ 7.280,00**.
     """)
 
 elif etapa == "3. Lançamento (MIGO)":
-    st.title("⚙️ Etapa 3: Lançamento MIGO")
-    st.write("Com o número do PC em mãos, vamos registrar a nota.")
-    
-    st.error("⚠️ **Regra de Ouro:** Confira o valor da NOTA. O boleto pode ter um valor diferente por causa dos impostos, não o use para conferência.")
-    
+    st.title("⚙️ Etapa 3: Lançamento (MIGO)")
     st.markdown("""
-    ### Passo a passo no SAP:
     1. Digite **MIGO**.
-    2. Cole o número do PC no campo **Pedido**.
-    3. Marque a caixa **OK** na linha do item.
-    4. Preencha:
-       - **Nota de Remessa:** O número da nota (ex: 118).
-       - **Data do Doc:** A data de emissão (ex: 09/04/2026).
-    5. Clique no ícone do **Disquete** (Salvar).
+    2. Cole o pedido: **4500462144**.
+    3. Nota de Remessa: **118**.
+    4. Data: **09/04/2026**.
+    5. Clique no **Disquete** para salvar.
     """)
