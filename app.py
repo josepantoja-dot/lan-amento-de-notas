@@ -84,3 +84,4 @@ elif etapa == "2. Busca no SAP (ME2L)":
 elif etapa == "3. Lançamento (MIGO)":
     st.title("⚙️ Etapa 3: Registro")
     st.write("Use os dados identificados na Etapa 1 para preencher os campos de Pedido, Nota de Remessa e Data no SAP.")
+    
